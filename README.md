@@ -6,7 +6,7 @@
 
 3. Setup STARDOG_HOME
 
-    ``The most important piece of configuration to complete before you start the Stardog server is setting the STARDOG_HOME environment variable. This is the directory where       all the Stardog databases and other files will be stored. If STARDOG_HOME is not defined, Stardog will use the Java user.dir property value.``
+    ``The most important piece of configuration to complete before you start the Stardog server is setting the STARDOG_HOME environment variable. This is the directory where       all the Stardog databases and other files will be stored.``
 
 
 * Create the directory to set STARDOG_HOME to in Command Prompt.
@@ -146,3 +146,30 @@ To get the latest version of in-browser Studio, perform the following steps:
 4. When the command in step 3 completes successfully, you should see a long string ID printed out in the terminal – this is the ID of the running Docker container; you can ignore it for present purposes. You can now access Studio in your browser by going to http://localhost:8888, again, substituting whatever port number you chose.
 
 At this point, you can stop and start the container whenever you need it, running docker stop stardog-studio and docker start stardog-studio, respectively (using whatever name you provided in step 3, above). The Docker Daemon and the Studio container must be running to access in-browser Studio. If Studio is not accessible please remember to start Docker, as it may not start automatically on startup
+
+# Stardog admin commands
+
+$DB will be replaced by the database name in each command
+
+1. Database creation
+        
+            stardog-admin db create -o spatial.enabled=true -o search.enabled=true -n $DB
+            
+2. Database deletion
+
+            stardog-admin db drop $DB
+            
+3. Adding Prefix to the database :
+
+            stardog namespace add $DB --prefix "" --uri http://www.example.org/fraud_detection#
+
+            stardog namespace add $DB --prefix wgs --uri http://www.w3.org/2003/01/geo/wgs84_pos#
+
+4. Mapping with csv files using turtle files:
+
+            stardog-admin virtual import $DB example.ttl example.csv
+            
+5. Making virtual graph using data from other sources like mysql.
+
+            stardog-admin virtual add examples.properties examples.ttl
+            
